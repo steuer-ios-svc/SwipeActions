@@ -539,18 +539,19 @@ extension SwipeView {
             width = max(0, width) /// Prevent from becoming negative.
             return width
         }()
-
+        
         let opacity: Double = {
+            /// Ensure spacing is accounted for.
+            let adjustedDragged = draggedLength - options.spacing
+            
             /// Subtract the start point from the dragged length, which cancels it out initially.
-            let offset = max(0, draggedLength - options.actionsVisibleStartPoint)
+            let offset = max(0, adjustedDragged - options.actionsVisibleStartPoint)
 
             /// Calculate the opacity percent.
             let percent = offset / (options.actionsVisibleEndPoint - options.actionsVisibleStartPoint)
-
+            
             /// Make sure the opacity doesn't exceed 1.
-            let opacity = min(1, percent)
-
-            return opacity
+            return min(1, percent)
         }()
 
         _VariadicView.Tree(
